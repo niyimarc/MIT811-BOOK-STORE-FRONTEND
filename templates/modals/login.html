@@ -8,19 +8,22 @@
                 <div class="identityBox">
                     <div class="form-wrapper">
                         <h1 id="loginModalLabel">welcome back!</h1>
-                        <input class="inputField" type="email" name="email" placeholder="Email Address">
-                        <input class="inputField" type="password" name="password" placeholder="Enter Password">
-                        <div class="input-check remember-me">
-                            <div class="checkbox-wrapper">
-                                <input type="checkbox" class="form-check-input" name="save-for-next"
-                                    id="saveForNext">
-                                <label for="saveForNext">Remember me</label>
+                        <form id="loginForm" method="post" action="{% url 'auth_app:login' %}">
+                            {% csrf_token %}
+                            <input class="inputField" type="email" name="username" placeholder="Email Address">
+                            <input class="inputField" type="password" name="password" placeholder="Enter Password">
+                            <div class="input-check remember-me">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" class="form-check-input" name="save-for-next"
+                                        id="saveForNext">
+                                    <label for="saveForNext">Remember me</label>
+                                </div>
+                                <div class="text"> <a href="index-2.html">Forgot Your password?</a> </div>
                             </div>
-                            <div class="text"> <a href="index-2.html">Forgot Your password?</a> </div>
-                        </div>
-                        <div class="loginBtn">
-                            <a href="index-2.html" class="theme-btn rounded-0"> Log in </a>
-                        </div>
+                            <div class="loginBtn">
+                                <input type="submit" value="Log in" class="theme-btn rounded-0">
+                            </div>
+                        </form>
                         <div class="orting-badge">
                             Or
                         </div>
@@ -35,13 +38,6 @@
                                 <img src="assets/img/facebook.png" alt="google">
                                 Continue With Facebook
                             </a>
-                        </div>
-
-                        <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault">
-                            <label class="form-check-label">
-                                I Accept Your Terms & Conditions
-                            </label>
                         </div>
                     </div>
 

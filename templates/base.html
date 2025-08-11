@@ -20,25 +20,25 @@
         {% endblock title %}
     </title>
     <!--<< Favcion >>-->
-    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}' %}">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
     <!--<< Bootstrap min.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
     <!--<< All Min Css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">
     <!--<< Animate.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
     <!--<< Magnific Popup.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
     <!--<< MeanMenu.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
     <!--<< Swiper Bundle.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
     <!--<< Nice Select.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
     <!--<< Icomoon.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/icomoon.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/icomoon.css' %}">
     <!--<< Main.css >>-->
-    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
 </head>
 
 <body>
@@ -139,6 +139,31 @@
     <script src="{% static 'assets/js/gsap.min.js' %}"></script>
     <!--<< Main.js >>-->
     <script src="{% static 'assets/js/main.js' %}"></script>
+    {% block extra_js %}
+    {% endblock extra_js %}
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            
+            <script>
+                swal.fire({
+                    "title": "Thank you!",
+                    "text": "{{ message }}",
+                    "icon": "success"
+                })
+            </script>
+        {% else %}
+            <script>
+                swal.fire({
+                    "title": "Sorry!",
+                    "text": "{{ message }}",
+                    "icon": "warning"
+                })
+            </script>
+        {% endif %}
+    {% endfor %}
+
 </body>
 
 </html>

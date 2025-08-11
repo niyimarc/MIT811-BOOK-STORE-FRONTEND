@@ -9,22 +9,27 @@
                 <div class="identityBox">
                     <div class="form-wrapper">
                         <h1 id="registrationModalLabel">Create account!</h1>
-                        <input class="inputField" type="text" name="name" id="name" placeholder="User Name">
-                        <input class="inputField" type="email" name="email" placeholder="Email Address">
-                        <input class="inputField" type="password" name="password" placeholder="Enter Password">
-                        <input class="inputField" type="password" name="password"
-                            placeholder="Enter Confirm Password">
-                        <div class="input-check remember-me">
-                            <div class="checkbox-wrapper">
-                                <input type="checkbox" class="form-check-input" name="save-for-next"
-                                    id="rememberMe">
-                                <label for="rememberMe">Remember me</label>
+                        <form id="loginForm" method="post" action="{% url 'auth_app:register' %}">
+                            {% csrf_token %}
+                            <input class="inputField" type="text" name="first_name" id="first_name" placeholder="First Name">
+                            <input class="inputField" type="text" name="last_name" id="last_name" placeholder="Last Name">
+                            <input class="inputField" type="text" name="username" id="username" placeholder="User Name">
+                            <input class="inputField" type="email" name="email" placeholder="Email Address">
+                            <input class="inputField" type="password" name="password" placeholder="Enter Password">
+                            <input class="inputField" type="password" name="confirm_password"
+                                placeholder="Enter Confirm Password">
+                            <div class="input-check remember-me">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" class="form-check-input" name="save-for-next"
+                                        id="rememberMe">
+                                    <label for="rememberMe">Remember me</label>
+                                </div>
+                                <div class="text"> <a href="index-2.html">Forgot Your password?</a> </div>
                             </div>
-                            <div class="text"> <a href="index-2.html">Forgot Your password?</a> </div>
-                        </div>
-                        <div class="loginBtn">
-                            <a href="index-2.html" class="theme-btn rounded-0"> Log in </a>
-                        </div>
+                            <div class="loginBtn">
+                                <input type="submit" value="Register" class="theme-btn rounded-0">
+                            </div>
+                        </form>
                         <div class="orting-badge">
                             Or
                         </div>
