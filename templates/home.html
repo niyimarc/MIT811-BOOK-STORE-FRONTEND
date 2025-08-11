@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta %}
+<meta property="og:title" content="{{business_name}} Home">
+<meta property="og:description" content="Welcome to {{business_name}}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{% static 'assets/img/logo/black-logo.svg' %}">
+{% endblock meta %}
+{% block title %}
+{{business_name}} - Home
+{% endblock title %}
+{% block content %}
+<!-- Hero Section start  -->
+{% include "includes/hero.html" %}
+<!-- Book Banner Section start  -->
+{% include "includes/banner.html" %}
+
+<!-- Shop Section Start -->
+{% include "includes/product_slidder.html" %}
+
+<!-- Featured Books Section Start -->
+{% include "includes/featured_books.html" %}
+
+
+<!-- Best Seller Section Start -->
+{% include "includes/best_sellers.html" %}
+
+<!-- Feature Section Start -->
+{% include "includes/features.html" %}
+
+<!-- Shop Section Start -->
+{% include "includes/favorite_authors.html" %}
+
+<!-- Cta Banner Section Start -->
+{% include "includes/cta_banner.html" %}
+
+<!-- Shop Section Start -->
+{% include "includes/favorite_books.html" %}
+
+<!-- Team Section Start -->
+{% include "includes/authors.html" %}
+
+<!-- News Section Start -->
+{% include "includes/latest_news.html" %} 
+{% endblock content %}
