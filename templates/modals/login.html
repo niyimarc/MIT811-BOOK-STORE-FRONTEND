@@ -1,3 +1,4 @@
+{% load static %}
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -19,23 +20,26 @@
                                     <label for="saveForNext">Remember me</label>
                                 </div>
                                 <div class="text"> <a href="index-2.html">Forgot Your password?</a> </div>
+                                
                             </div>
+                            
                             <div class="loginBtn">
                                 <input type="submit" value="Log in" class="theme-btn rounded-0">
                             </div>
+                            <div class="text"> <a href="{% url 'auth_app:register' %}">Dont have an account? Register</a> </div>
                         </form>
                         <div class="orting-badge">
                             Or
                         </div>
                         <div>
                             <a class="another-option" href="https://www.google.com/">
-                                <img src="assets/img/google.png" alt="google">
+                                <img src="{% static 'assets/img/google.png' %}" alt="google">
                                 Continue With Google
                             </a>
                         </div>
                         <div>
                             <a class="another-option another-option-two" href="https://www.facebook.com/">
-                                <img src="assets/img/facebook.png" alt="google">
+                                <img src="{% static 'assets/img/facebook.png' %}" alt="google">
                                 Continue With Facebook
                             </a>
                         </div>

@@ -16,6 +16,12 @@
 {% block extra_js %}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // Remove close button
+    {% comment %} const closeBtn = document.querySelector('#registrationModal .close-btn');
+    if (closeBtn) {
+        closeBtn.remove();
+    } {% endcomment %}
+
     var myModal = new bootstrap.Modal(document.getElementById('registrationModal'), {
         backdrop: 'static', // clicking outside won't close it
         keyboard: false     // pressing Esc won't close it
