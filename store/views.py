@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from .utils import get_products, remove_params, get_rating_counts
+from django.core.cache import cache
+import requests
+import math
 
 # Create your views here.
 def home(request):
@@ -6,3 +10,120 @@ def home(request):
 
     }
     return render(request, 'home.html', context)
+
+def shop(request):
+    try:
+        page = int(request.GET.get("page", 1))
+    except ValueError:
+        page = 1
+
+    search = request.GET.get("search", "")
+    order_by = request.GET.getlist("order_by")
+    selected_categories = request.GET.getlist("categories")
+    selected_format = request.GET.get("format_type")
+    selected_stock_status = request.GET.get("stock_status")
+
+    try:
+        selected_rating = int(request.GET.get("rating", "")) if request.GET.get("rating") else None
+    except ValueError:
+        selected_rating = None
+
+    try:
+        min_price = float(request.GET.get("min_price", "")) if request.GET.get("min_price") else None
+    except ValueError:
+        min_price = None
+
+    try:
+        max_price = float(request.GET.get("max_price", "")) if request.GET.get("max_price") else None
+    except ValueError:
+        max_price = None
+
+    # Build proxy URL
+    proxy_url = request.build_absolute_uri(
+        get_products(
+            page=page, 
+            search=search, 
+            order_by=order_by, 
+            categories=selected_categories, 
+            format_type=selected_format, 
+            stock_status=selected_stock_status,
+            rating=selected_rating,
+            min_price=min_price,
+            max_price=max_price
+        )
+    )
+
+    try:
+        response = requests.get(proxy_url, timeout=10)
+        response.raise_for_status()
+        products_data = response.json()
+    except requests.RequestException as e:
+        products_data = {"results": [], "count": 0, "next": None, "previous": None}
+
+    # Fetch rating counts for filter sidebar
+    rating_counts_url = request.build_absolute_uri(get_rating_counts())
+    try:
+        rating_response = requests.get(rating_counts_url, timeout=10)
+        rating_response.raise_for_status()
+        ratings_data = rating_response.json()  # [{"rating": 1, "product_count": 7}, ...]
+        print(ratings_data)
+    except requests.RequestException:
+        ratings_data = []
+    # Has prev/next from API
+    has_prev = bool(products_data.get("previous"))
+    has_next = bool(products_data.get("next"))
+
+    # Get total pages from API count
+    total_products = products_data.get("count", 0)
+    per_page = len(products_data.get("results", [])) or 1  # avoid division by zero
+    total_pages = math.ceil(total_products / per_page)
+
+    # Build page number list
+    if has_prev and has_next:
+        page_numbers = [page - 1, page, page + 1]
+    elif has_prev and not has_next:
+        start = max(1, page - 2)
+        page_numbers = [p for p in [start, start + 1, start + 2] if p <= page]
+    elif not has_prev and has_next:
+        page_numbers = [page, page + 1, page + 2]
+    else:
+        page_numbers = [page]
+
+    # Remove pages that don't exist
+    page_numbers = [p for p in page_numbers if p <= total_pages]
+
+    # Show ellipsis only if there are more pages after the last number
+    show_ellipsis = bool(page_numbers) and total_pages > page_numbers[-1]
+
+    qs = request.GET.copy()
+    qs.pop("page", None)
+    qs_str = qs.urlencode()
+
+    qs_no_format_str = remove_params(request.GET, "format_type", "page")
+    qs_no_stock_str = remove_params(request.GET, "stock_status", "page")
+
+    context = {
+        "products": products_data.get("results", []),
+        "total": total_products,
+        "page": page,
+        "has_prev": has_prev,
+        "has_next": has_next,
+        "prev_page": page - 1 if has_prev and page > 1 else None,
+        "next_page": page + 1 if has_next else None,
+        "page_numbers": page_numbers,
+        "show_ellipsis": show_ellipsis,
+        "qs": qs_str,
+        "qs_no_format": qs_no_format_str,
+        "qs_no_stock": qs_no_stock_str,
+        "search": search,
+        "order_by": order_by,
+        "selected_categories": selected_categories,
+        "selected_format": selected_format,
+        "selected_stock_status": selected_stock_status,
+        "selected_rating": selected_rating,
+        "min_price": min_price,
+        "max_price": max_price,
+        "ratings_data": ratings_data,
+    }
+
+    return render(request, "shop.html", context)

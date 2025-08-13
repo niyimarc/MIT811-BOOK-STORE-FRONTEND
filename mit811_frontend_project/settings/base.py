@@ -55,6 +55,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'auth_app.context_processors.auth_status',
                 'store.context_processors.app_information',
+                'store.context_processors.categories_data',
             ],
         },
     },
