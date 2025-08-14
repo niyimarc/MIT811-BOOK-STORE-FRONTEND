@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from .utils import get_products, remove_params, get_rating_counts
+from .utils import get_products, remove_params, get_rating_counts, get_product_details
 from django.core.cache import cache
+from django.http import JsonResponse, HttpResponse, Http404
 import requests
 import math
 
@@ -66,7 +67,7 @@ def shop(request):
         rating_response = requests.get(rating_counts_url, timeout=10)
         rating_response.raise_for_status()
         ratings_data = rating_response.json()  # [{"rating": 1, "product_count": 7}, ...]
-        print(ratings_data)
+        # print(ratings_data)
     except requests.RequestException:
         ratings_data = []
     # Has prev/next from API
@@ -127,3 +128,19 @@ def shop(request):
     }
 
     return render(request, "shop.html", context)
+
+def product_details(request, slug):
+    api_url = request.build_absolute_uri(get_product_details(slug))
+
+    try:
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        product_data = response.json()
+    except requests.RequestException:
+        product_data = None
+    print(product_data)
+    context = {
+        "product": product_data
+    }
+
+    return render(request, "product_details.html", context)

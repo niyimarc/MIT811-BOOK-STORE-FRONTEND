@@ -59,6 +59,14 @@ def get_rating_counts():
     query_string = urlencode(params, doseq=True)
     return reverse("proxy_handler") + f"?endpoint={endpoint}&{query_string}"
 
+def get_product_details(slug):
+    endpoint = f"/api/catalog/books/{slug}/"
+    params = {
+        "endpoint_type": "public",
+    }
+    query_string = urlencode(params, doseq=True)
+    return reverse("proxy_handler") + f"?endpoint={endpoint}&{query_string}"
+
 def remove_params(querydict, *params):
     qs = querydict.copy()
     for p in params:

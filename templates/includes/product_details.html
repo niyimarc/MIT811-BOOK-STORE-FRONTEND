@@ -1,0 +1,445 @@
+{% load static %}
+{% load rating_tags %}
+<!-- Breadcumb Section Start -->
+<div class="breadcrumb-wrapper">
+    <div class="book1">
+        <img src="{% static 'assets/img/hero/book1.png' %}" alt="book">
+    </div>
+    <div class="book2">
+        <img src="{% static 'assets/img/hero/book2.png' %}" alt="book">
+    </div>
+    <div class="container">
+        <div class="page-heading">
+            <h1>Shop Details</h1>
+            <div class="page-header">
+                <ul class="breadcrumb-items wow fadeInUp" data-wow-delay=".3s">
+                    <li>
+                        <a href="{% url 'store:home' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </li>
+                    <li>
+                        {{product.title}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Shop Details Section Start -->
+<section class="shop-details-section fix section-padding">
+    <div class="container">
+        <div class="shop-details-wrapper">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="shop-details-image">
+                        <div class="tab-content">
+                            {% for image in product.images %}
+                            <div id="thumb{{ forloop.counter }}" class="tab-pane fade {% if forloop.first %}show active{% endif %}">
+                                <div class="shop-details-thumb">
+                                    <img src="{{ image.image }}" alt="img">
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                        <ul class="nav">
+                            {% for image in product.images %}
+                            <li class="nav-item">
+                                <a href="#thumb{{ forloop.counter }}" data-bs-toggle="tab" class="nav-link {% if forloop.first %}active{% endif %}">
+                                    <img src="{{ image.image }}" height="100px" alt="img">
+                                </a>
+                            </li>
+                            {% endfor %}
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="shop-details-content">
+                        <div class="title-wrapper">
+                            <h2>{{product.title}}</h2>
+                            <h5>Stock availability.</h5>
+                        </div>
+                        <div class="star">
+                            {% include product.average_rating|rating_to_star_template %}
+                            <span>({{product.total_rating_count}} Customer Reviews)</span>
+                        </div>
+                        <p>
+                            {{product.description|truncatewords:100}}
+                        </p>
+                        <div class="price-list">
+                            <h3>₦{{product.price}}</h3>
+                        </div>
+                        <div class="cart-wrapper">
+                            <div class="quantity-basket">
+                                <p class="qty">
+                                    <button class="qtyminus" aria-hidden="true">−</button>
+                                    <input type="number" name="qty" id="qty2" min="1" max="10" step="1" value="1">
+                                    <button class="qtyplus" aria-hidden="true">+</button>
+                                </p>
+                            </div> 
+                            <button type="button"  class="theme-btn style-2" data-bs-toggle="modal" data-bs-target="#readMoreModal">
+                                Read A little
+                                </button>
+                                <!-- Read More Modal -->
+                            <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
+                                <div class="modal-dialog"> 
+                                    <div class="modal-content">
+                                        <div class="modal-body" style="background-image: url({% static 'assets/img/popupBg.png' %});"> 
+                                            <div class="close-btn">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="readMoreBox"> 
+                                                <div class="content">
+                                                    <h3 id="readMoreModalLabel">{{product.title}}</h3>
+                                                    <p>{{product.description}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="shop-details.html" class="theme-btn"><i
+                                    class="fa-solid fa-basket-shopping"></i> Add To Cart</a>
+                            <div class="icon-box">
+                                <a href="shop-details.html" class="icon">
+                                    <i class="far fa-heart"></i>
+                                </a>
+                                <a href="shop-details.html" class="icon-2">
+                                    <img src="{% static 'assets/img/icon/shuffle.svg' %}" alt="svg-icon">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="category-box">
+                            <div class="category-list">
+                                <ul>
+                                    <li>
+                                        <span>ISBN:</span> {{product.isbn}}
+                                    </li>
+                                    {% if product.categories %}   
+                                    <li>
+                                        <span>Category:</span>
+                                        {% for category in product.categories %}
+                                            {{ category.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                                <ul>
+                                    {% if product.tags %}                                    
+                                        <li>
+                                            <span>Tags:</span>
+                                            {% for tag in product.tags %}
+                                                {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    {% endif %}
+                                    <li>
+                                        <span>Format:</span> 
+                                        {% if product.format_type == 'both' %}
+                                            Physical/E-book
+                                        {% else %}
+                                            {{product.format_type}}
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <span>Total page:</span> 
+                                        {{product.pages}}
+                                    </li>
+                                    <li>
+                                        <span>Language:</span>
+                                        {{product.language}}
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <span>Publish Date:</span>
+                                        {{product.publication_date}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="box-check">
+                            <div class="check-list">
+                                <ul>
+                                    <li>
+                                        <i class="fa-solid fa-check"></i>
+                                        Free shipping orders from $150
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-check"></i>
+                                        30 days exchange & return
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <i class="fa-solid fa-check"></i>
+                                        Mamaya Flash Discount: Starting at 30% Off
+                                    </li>
+                                    <li>
+                                        <i class="fa-solid fa-check"></i>
+                                        Safe & Secure online shopping
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="single-tab section-padding pb-0">
+                <ul class="nav mb-5" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a href="#description" data-bs-toggle="tab" class="nav-link ps-0 active"
+                            aria-selected="true" role="tab">
+                            <h6>Description</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a href="#additional" data-bs-toggle="tab" class="nav-link" aria-selected="false"
+                            tabindex="-1" role="tab">
+                            <h6>Additional Information </h6>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a href="#review" data-bs-toggle="tab" class="nav-link" aria-selected="false" tabindex="-1"
+                            role="tab">
+                            <h6>reviews ({{product.total_rating_count}})</h6>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="description" class="tab-pane fade show active" role="tabpanel">
+                        <div class="description-items">
+                            <p>{{product.description}}</p>
+                        </div>
+                    </div>
+                    <div id="additional" class="tab-pane fade" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-1">Author</td>
+                                        <td class="text-2">
+                                        {% for author in product.authors %}
+                                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-1">ISBN</td>
+                                        <td class="text-2">{{product.isbn}}</td>
+                                    </tr>
+                                    {% if product.categories %} 
+                                    <tr>
+                                        <td class="text-1">Categories</td>
+                                        <td class="text-2">
+                                        {% for category in product.categories %}
+                                            {{ category.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if product.tags %}                                    
+                                    <tr>
+                                        <td class="text-1">Tags</td>
+                                        <td class="text-2">
+                                        {% for tag in product.tags %}
+                                            {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td class="text-1">Publish Date</td>
+                                        <td class="text-2">{{product.publication_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-1">Total Page</td>
+                                        <td class="text-2">{{product.pages}}</td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td class="text-1">Format</td>
+                                        <td class="text-2">
+                                            {% if product.format_type == 'both' %}
+                                                Physical/E-book
+                                            {% else %}
+                                                {{product.format_type}}
+                                            {% endif %}
+                                        </td>                                        
+                                    </tr>                                    
+                                    {% if product.language %}                                    
+                                    <tr>
+                                        <td class="text-1">Language</td>
+                                        <td class="text-2">{{product.language}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td class="text-1">Publisher</td>
+                                        <td class="text-2">{{product.publisher.name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="review" class="tab-pane fade" role="tabpanel">
+                        <div class="review-items">
+                            <div class="review-wrap-area d-flex gap-4">
+                                <div class="review-thumb">
+                                    <img src="assets/img/shop-details/review.png" alt="img">
+                                </div>
+                                <div class="review-content">
+                                    <div
+                                        class="head-area d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                        <div class="cont">
+                                            <h5><a href="news-details.html">Leslie Alexander</a></h5>
+                                            <span>February 10, 2024 at 2:37 pm</span>
+                                        </div>
+                                        <div class="star">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="mt-30 mb-4">
+                                        Neque porro est qui dolorem ipsum quia quaed inventor veritatis et quasi
+                                        architecto var sed efficitur turpis gilla sed sit amet finibus eros. Lorem
+                                        Ipsum is <br> simply dummy
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="review-title mt-5 py-15 mb-30">
+                                <h4>Your Rating*</h4>
+                                <div class="rate-now d-flex align-items-center">
+                                    <p>Your Rating*</p>
+                                    <div class="star">
+                                        <i class="fa-light fa-star"></i>
+                                        <i class="fa-light fa-star"></i>
+                                        <i class="fa-light fa-star"></i>
+                                        <i class="fa-light fa-star"></i>
+                                        <i class="fa-light fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-form">
+                                <form action="#" id="contact-form" method="POST">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6">
+                                            <div class="form-clt">
+                                                <span>Your Name*</span>
+                                                <input type="text" name="name" id="name" placeholder="Your Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-clt">
+                                                <span>Your Email*</span>
+                                                <input type="text" name="email" id="email" placeholder="Your Email">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 wow fadeInUp animated" data-wow-delay=".8">
+                                            <div class="form-clt">
+                                                <span>Message*</span>
+                                                <textarea name="message" id="message"
+                                                    placeholder="Write Message"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 wow fadeInUp animated" data-wow-delay=".9">
+                                            <div class="form-check d-flex gap-2 from-customradio">
+                                                <input type="checkbox" class="form-check-input"
+                                                    name="flexRadioDefault" id="flexRadioDefault12">
+                                                <label class="form-check-label" for="flexRadioDefault12">
+                                                    i accept your terms & conditions
+                                                </label>
+                                            </div>
+                                            <button type="submit" class="theme-btn">
+                                                Submit now
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Ratting Book Section Start -->
+<section class="top-ratting-book-section fix section-padding pt-0">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2 class="mb-3 wow fadeInUp" data-wow-delay=".3s">Related Books</h2>
+            <p class="wow fadeInUp" data-wow-delay=".5s">
+                Interdum et malesuada fames ac ante ipsum primis in faucibus. <br> Donec at nulla nulla. Duis
+                posuere ex lacus
+            </p>
+        </div>
+        <div class="swiper book-slider">
+            <div class="swiper-wrapper">
+                {% for related_book in product.related_books %}
+                <div class="swiper-slide">
+                    <div class="shop-box-items style-2">
+                        <div class="book-thumb center">
+                            <a href="{% url 'store:product_detail' related_book.slug %}"><img src="{{ related_book.main_image }}" alt="{{ related_book.title }}"></a>
+                            <ul class="post-box">
+                                <li>
+                                    Hot
+                                </li>
+                                <li>
+                                    -30%
+                                </li>
+                            </ul>
+                            <ul class="shop-icon d-grid justify-content-center align-items-center">
+                                <li>
+                                    <a href="{% url 'store:product_detail' related_book.slug %}"><i class="far fa-heart"></i></a>
+                                </li>
+                            </ul>
+                            <ul class="shop-icon d-grid justify-content-center align-items-center">
+                                <li>
+                                    <a href="shop-cart.html"><i class="far fa-heart"></i></a>
+                                </li>
+                                <li>
+                                    <a href="shop-cart.html">
+
+                                        <img class="icon" src="{% static 'assets/img/icon/shuffle.svg' %}" alt="svg-icon">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'store:product_detail' related_book.slug %}"><i class="far fa-eye"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="shop-content">
+                            <h5> Design Low Book </h5>
+                            <h3><a href="{% url 'store:product_detail' related_book.slug %}">{{related_book.title}}</h3>
+                            <ul class="price-list">
+                                <li>₦{{related_book.price}}</li>
+                                <li>
+                                    <i class="fa-solid fa-star"></i>
+                                    {{related_book.average_rating}} ({{related_book.rating_count}})
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="shop-button">
+                            <a href="shop-details.html" class="theme-btn"><i
+                                    class="fa-solid fa-basket-shopping"></i> Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

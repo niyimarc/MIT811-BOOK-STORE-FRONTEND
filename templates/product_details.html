@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta %}
+<meta property="og:title" content="{{product.title}}">
+<meta property="og:description" content="{{product.description}}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ product.productimage_set.0.image }}">
+{% endblock meta %}
+{% block title %}
+{{business_name}} - {{product.title}}
+{% endblock title %}
+
+{% block content %}
+{% include "includes/product_details.html" %}
+{% endblock content %}
