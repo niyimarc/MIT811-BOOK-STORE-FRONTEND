@@ -138,7 +138,7 @@ def product_details(request, slug):
         product_data = response.json()
     except requests.RequestException:
         product_data = None
-    print(product_data)
+    # print(product_data)
     context = {
         "product": product_data
     }
