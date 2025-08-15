@@ -127,6 +127,23 @@ def shop(request):
         "ratings_data": ratings_data,
     }
 
+    # Number of items on current page
+    results_on_page = len(products_data.get("results", []))
+
+    # Calculate first and last item number
+    if total_products == 0:
+        first_item = 0
+        last_item = 0
+    else:
+        first_item = (page - 1) * results_on_page + 1
+        last_item = (page - 1) * results_on_page + results_on_page
+
+    # Add to context
+    context["results_range"] = {
+        "first": first_item,
+        "last": last_item,
+        "total": total_products
+    }
     return render(request, "shop.html", context)
 
 def product_details(request, slug):

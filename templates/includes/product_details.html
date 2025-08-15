@@ -1,5 +1,6 @@
 {% load static %}
 {% load rating_tags %}
+{% load dict_extras %}
 <!-- Breadcumb Section Start -->
 <div class="breadcrumb-wrapper">
     <div class="book1">
@@ -131,6 +132,17 @@
                                     </li>
                                     {% endif %}
                                 </ul>
+                                <ul>                                   
+                                    <li>
+                                        <span>Total page:</span> 
+                                        {{product.pages}}
+                                    </li>
+
+                                    <li>
+                                        <span>Language:</span>
+                                        {{product.language}}
+                                    </li>
+                                </ul>
                                 <ul>
                                     {% if product.tags %}                                    
                                         <li>
@@ -149,25 +161,10 @@
                                         {% endif %}
                                     </li>
                                 </ul>
-                                <ul>
-                                    <li>
-                                        <span>Total page:</span> 
-                                        {{product.pages}}
-                                    </li>
-                                    <li>
-                                        <span>Language:</span>
-                                        {{product.language}}
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-                                        <span>Publish Date:</span>
-                                        {{product.publication_date}}
-                                    </li>
-                                </ul>
+                                
                             </div>
                         </div>
-                        <div class="box-check">
+                        {% comment %} <div class="box-check">
                             <div class="check-list">
                                 <ul>
                                     <li>
@@ -190,7 +187,7 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                         
                     </div>
                 </div>
@@ -291,7 +288,51 @@
                         </div>
                     </div>
                     <div id="review" class="tab-pane fade" role="tabpanel">
-                        <div class="review-items">
+                        <div class="review-items">    
+                            <form action="#" id="contact-form" method="POST">
+                                <div class="review-title mt-5 py-15 mb-30">
+                                    <h4>Your Rating*</h4>
+                                    <div class="rate-now d-flex align-items-center">
+                                        <div class="categories-list">
+                                            {% for rating in "5 4 3 2 1"|split:" " %}
+                                                <label class="checkbox-single d-flex align-items-center">
+                                                    <span class="d-flex gap-xl-3 gap-2 align-items-center">
+                                                        <span class="checkbox-area d-center">
+                                                            <input type="radio" name="rating" value="{{ rating }}">
+                                                            <span class="checkmark d-center"></span>
+                                                        </span>
+                                                        <span class="text-color">
+                                                            <span class="star">
+                                                                {% include "rating_star/"|add:rating|add:"_star.html" %}
+                                                            </span>
+                                                            {{ product.rating_counts|dict_get:rating|default:"0" }}
+
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="review-form">
+                                    
+                                        <div class="row g-4">
+                                            <div class="col-lg-12 wow fadeInUp animated" data-wow-delay=".8">
+                                                <div class="form-clt">
+                                                    <span>Message*</span>
+                                                    <textarea name="review" id="message"
+                                                        placeholder="Write Message"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 wow fadeInUp animated" data-wow-delay=".9">
+                                                <button type="submit" class="theme-btn">
+                                                    Submit now
+                                                </button>
+                                            </div>
+                                        </div>
+                                </div>
+                            </form>
                             <div class="review-wrap-area d-flex gap-4">
                                 <div class="review-thumb">
                                     <img src="assets/img/shop-details/review.png" alt="img">
@@ -318,56 +359,6 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="review-title mt-5 py-15 mb-30">
-                                <h4>Your Rating*</h4>
-                                <div class="rate-now d-flex align-items-center">
-                                    <p>Your Rating*</p>
-                                    <div class="star">
-                                        <i class="fa-light fa-star"></i>
-                                        <i class="fa-light fa-star"></i>
-                                        <i class="fa-light fa-star"></i>
-                                        <i class="fa-light fa-star"></i>
-                                        <i class="fa-light fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="review-form">
-                                <form action="#" id="contact-form" method="POST">
-                                    <div class="row g-4">
-                                        <div class="col-lg-6">
-                                            <div class="form-clt">
-                                                <span>Your Name*</span>
-                                                <input type="text" name="name" id="name" placeholder="Your Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-clt">
-                                                <span>Your Email*</span>
-                                                <input type="text" name="email" id="email" placeholder="Your Email">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 wow fadeInUp animated" data-wow-delay=".8">
-                                            <div class="form-clt">
-                                                <span>Message*</span>
-                                                <textarea name="message" id="message"
-                                                    placeholder="Write Message"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 wow fadeInUp animated" data-wow-delay=".9">
-                                            <div class="form-check d-flex gap-2 from-customradio">
-                                                <input type="checkbox" class="form-check-input"
-                                                    name="flexRadioDefault" id="flexRadioDefault12">
-                                                <label class="form-check-label" for="flexRadioDefault12">
-                                                    i accept your terms & conditions
-                                                </label>
-                                            </div>
-                                            <button type="submit" class="theme-btn">
-                                                Submit now
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -377,13 +368,13 @@
 </section>
 
 <!-- Top Ratting Book Section Start -->
+{% if product.related_books %}
 <section class="top-ratting-book-section fix section-padding pt-0">
     <div class="container">
         <div class="section-title text-center">
             <h2 class="mb-3 wow fadeInUp" data-wow-delay=".3s">Related Books</h2>
             <p class="wow fadeInUp" data-wow-delay=".5s">
-                Interdum et malesuada fames ac ante ipsum primis in faucibus. <br> Donec at nulla nulla. Duis
-                posuere ex lacus
+                Don’t close the chapter yet—explore these related books chosen to match the themes, mood, and style you just enjoyed.
             </p>
         </div>
         <div class="swiper book-slider">
@@ -396,9 +387,6 @@
                             <ul class="post-box">
                                 <li>
                                     Hot
-                                </li>
-                                <li>
-                                    -30%
                                 </li>
                             </ul>
                             <ul class="shop-icon d-grid justify-content-center align-items-center">
@@ -443,3 +431,4 @@
         </div>
     </div>
 </section>
+{% endif %}

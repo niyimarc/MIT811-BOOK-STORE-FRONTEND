@@ -25,7 +25,7 @@ def categories_data(request):
             resp.raise_for_status()
             categories = resp.json()  # <-- IMPORTANT: get actual data, not just URL
             cache.set("categories_data", categories, 60 * 30)  # cache for 30 minutes
-            print(categories)
+            # print(categories)
         except Exception as e:
             categories = []
             print("Error fetching categories:", e)

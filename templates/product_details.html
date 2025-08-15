@@ -4,7 +4,7 @@
 <meta property="og:title" content="{{product.title}}">
 <meta property="og:description" content="{{product.description}}">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
-<meta property="og:image" content="{{ product.productimage_set.0.image }}">
+<meta property="og:image" content="{{ product.images.0.image }}">
 {% endblock meta %}
 {% block title %}
 {{business_name}} - {{product.title}}

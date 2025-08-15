@@ -10,11 +10,11 @@
     </div>
     <div class="container">
         <div class="page-heading">
-            <h1>Shop Default</h1>
+            <h1>Shop {{business_name}}</h1>
             <div class="page-header">
                 <ul class="breadcrumb-items wow fadeInUp" data-wow-delay=".3s">
                     <li>
-                        <a href="index.html">
+                        <a href="{% url 'store:home' %}">
                             Home
                         </a>
                     </li>
@@ -22,7 +22,7 @@
                         <i class="fa-solid fa-chevron-right"></i>
                     </li>
                     <li>
-                        Shop Default
+                        {{business_name}}
                     </li>
                 </ul>
             </div>
@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="woocommerce-notices-wrapper wow fadeInUp" data-wow-delay=".3s">
-                        <p>Showing 1-3 Of 34 Results </p>
+                        <p>Showing {{ results_range.first }}–{{ results_range.last }} of {{ results_range.total }} Results </p>
                         <div class="form-clt">
                             <div class="nice-select" tabindex="0">
                                 <span class="current">
@@ -58,12 +58,6 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="icon">
-                                <a href="shop-list.html"><i class="fas fa-list"></i></a>
-                            </div>
-                            <div class="icon-2 active">
-                                <a href="shop.html"><i class="fa-sharp fa-regular fa-grid-2"></i></a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -73,9 +67,9 @@
                             <div class="wid-title">
                                 <h5>Search</h5>
                             </div>
-                            <form action="#" class="search-toggle-box">
+                            <form action="{% url 'store:shop' %}"  method="get" class="search-toggle-box">
                                 <div class="input-area search-container">
-                                    <input class="search-input" type="text" placeholder="Search here">
+                                    <input class="search-input" name="search" value="{{ search|default:'' }}" type="text" placeholder="Search here">
                                     <button class="cmn-btn search-icon">
                                         <i class="far fa-search"></i>
                                     </button>
@@ -222,126 +216,28 @@
                                 <h5>By Review</h5>
                             </div>
                             <div class="categories-list">
+                                <form method="get" id="filter-form">
                                 {% for rating in "5 4 3 2 1"|split:" " %}
                                     <label class="checkbox-single d-flex align-items-center">
                                         <span class="d-flex gap-xl-3 gap-2 align-items-center">
                                             <span class="checkbox-area d-center">
-                                                <input type="checkbox" name="rating" value="{{ rating }}">
+                                                <input type="radio" name="rating" value="{{ rating }}"
+                                                {% if selected_rating|stringformat:"s" == rating %}checked{% endif %}
+                                                onchange="this.form.submit()">
                                                 <span class="checkmark d-center"></span>
                                             </span>
                                             <span class="text-color">
                                                 <span class="star">
                                                     {% include "rating_star/"|add:rating|add:"_star.html" %}
                                                 </span>
-                                                {{ rating_counts|dict_get:rating|default:"0" }}
+                                                {{ ratings_data|dict_get:rating|default:"0" }}
 
                                             </span>
                                         </span>
                                     </label>
                                 {% endfor %}
+                                </form>
                             </div>
-
-                            {% comment %} <div class="categories-list">
-                                <!-- 5 Stars -->
-                                <label class="checkbox-single d-flex align-items-center">
-                                    <span class="d-flex gap-xl-3 gap-2 align-items-center">
-                                        <span class="checkbox-area d-center">
-                                            <input type="checkbox" name="rating" value="5">
-                                            <span class="checkmark d-center"></span>
-                                        </span>
-                                        <span class="text-color">
-                                            <span class="star">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </span>
-                                            {{ rating_counts.5|default:0 }}
-                                        </span>
-                                    </span>
-                                </label>
-
-                                <!-- 4 Stars -->
-                                <label class="checkbox-single d-flex align-items-center">
-                                    <span class="d-flex gap-xl-3 gap-2 align-items-center">
-                                        <span class="checkbox-area d-center">
-                                            <input type="checkbox" name="rating" value="4">
-                                            <span class="checkmark d-center"></span>
-                                        </span>
-                                        <span class="text-color">
-                                            <span class="star">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                            </span>
-                                            {{ rating_counts.4|default:0 }}
-                                        </span>
-                                    </span>
-                                </label>
-
-                                <!-- 3 Stars -->
-                                <label class="checkbox-single d-flex align-items-center">
-                                    <span class="d-flex gap-xl-3 gap-2 align-items-center">
-                                        <span class="checkbox-area d-center">
-                                            <input type="checkbox" name="rating" value="3">
-                                            <span class="checkmark d-center"></span>
-                                        </span>
-                                        <span class="text-color">
-                                            <span class="star">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                            </span>
-                                            {{ rating_counts.3|default:0 }}
-                                        </span>
-                                    </span>
-                                </label>
-
-                                <!-- 2 Stars -->
-                                <label class="checkbox-single d-flex align-items-center">
-                                    <span class="d-flex gap-xl-3 gap-2 align-items-center">
-                                        <span class="checkbox-area d-center">
-                                            <input type="checkbox" name="rating" value="2">
-                                            <span class="checkmark d-center"></span>
-                                        </span>
-                                        <span class="text-color">
-                                            <span class="star">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                            </span>
-                                            {{ rating_counts.2|default:0 }}
-                                        </span>
-                                    </span>
-                                </label>
-
-                                <!-- 1 Star -->
-                                <label class="checkbox-single d-flex align-items-center">
-                                    <span class="d-flex gap-xl-3 gap-2 align-items-center">
-                                        <span class="checkbox-area d-center">
-                                            <input type="checkbox" name="rating" value="1">
-                                            <span class="checkmark d-center"></span>
-                                        </span>
-                                        <span class="text-color">
-                                            <span class="star">
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                                <i class="fa-sharp fa-light fa-star"></i>
-                                            </span>
-                                            {{ rating_counts.1|default:0 }}
-                                        </span>
-                                    </span>
-                                </label>
-                            </div> {% endcomment %}
                         </div>
 
                     </div>
@@ -359,9 +255,6 @@
                                             <ul class="post-box">
                                                 <li>
                                                     Hot
-                                                </li>
-                                                <li>
-                                                    -30%
                                                 </li>
                                             </ul>
                                             <ul class="shop-icon d-grid justify-content-center align-items-center">
