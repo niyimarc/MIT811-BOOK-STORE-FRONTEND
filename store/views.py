@@ -1,8 +1,9 @@
-from django.shortcuts import render
-from .utils import get_products, remove_params, get_rating_counts, get_product_details
+from django.shortcuts import render, redirect
+from .utils import get_products, remove_params, get_rating_counts, get_product_details, submit_product_rating
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse, Http404
 import requests
+from django.contrib import messages
 import math
 
 # Create your views here.
@@ -148,6 +149,32 @@ def shop(request):
 
 def product_details(request, slug):
     api_url = request.build_absolute_uri(get_product_details(slug))
+    rating_url = request.build_absolute_uri(submit_product_rating(slug))
+
+    if request.method == "POST":
+        score = request.POST.get("score")
+        review = request.POST.get("review")
+
+        headers = {
+            "Authorization": f"Bearer {request.session.get('access_token')}",
+            "Content-Type": "application/json",
+        }
+        payload = {
+            "score": int(score) if score else None,
+            "review": review
+        }
+
+        try:
+            res = requests.post(rating_url, json=payload, headers=headers, timeout=10)
+            if res.status_code in (200, 201):
+                messages.success(request, "Review submitted successfully!")
+            else:
+                messages.error(request, f"Error submitting review: {res.text}")
+        except requests.RequestException:
+            messages.error(request, "Could not submit review. Please try again later.")
+
+        return redirect("store:product_detail", slug=slug)
+
 
     try:
         response = requests.get(api_url, timeout=10)
@@ -157,7 +184,8 @@ def product_details(request, slug):
         product_data = None
     # print(product_data)
     context = {
-        "product": product_data
+        "product": product_data,
+        "rating_url": rating_url
     }
 
     return render(request, "product_details.html", context)

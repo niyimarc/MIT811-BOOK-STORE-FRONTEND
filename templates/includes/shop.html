@@ -273,7 +273,7 @@
                                             </ul>
                                         </div>
                                         <div class="shop-content">
-                                            <h3><a href="{% url 'store:product_detail' product.slug %}">{{product.title}}</a></h3>
+                                            <h3><a href="{% url 'store:product_detail' product.slug %}">{{product.title|truncatewords:4}}</a></h3>
                                             <ul class="price-list">
                                                 <li>₦{{product.price}}</li>
                                                 <li>

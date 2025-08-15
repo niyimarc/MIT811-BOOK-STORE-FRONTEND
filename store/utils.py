@@ -67,6 +67,14 @@ def get_product_details(slug):
     query_string = urlencode(params, doseq=True)
     return reverse("proxy_handler") + f"?endpoint={endpoint}&{query_string}"
 
+def submit_product_rating(slug):
+    endpoint = f"/api/catalog/{slug}/reviews/"
+    params = {
+        "endpoint_type": "private",
+    }
+    query_string = urlencode(params, doseq=True)
+    return reverse("proxy_handler") + f"?endpoint={endpoint}&{query_string}"
+
 def remove_params(querydict, *params):
     qs = querydict.copy()
     for p in params:

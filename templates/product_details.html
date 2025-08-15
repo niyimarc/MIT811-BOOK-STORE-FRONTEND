@@ -13,3 +13,29 @@
 {% block content %}
 {% include "includes/product_details.html" %}
 {% endblock content %}
+
+{% comment %} {% block extra_js %}
+<script>
+document.querySelector('#contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const score = document.querySelector('input[name="score"]:checked')?.value;
+    const review = document.querySelector('textarea[name="review"]').value;
+
+    fetch('{{ rating_url }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ score: score, review: review })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        alert('Review submitted!');
+    })
+    .catch(err => console.error(err));
+});
+</script>
+{% endblock extra_js %} {% endcomment %}

@@ -64,7 +64,7 @@
                     <div class="shop-details-content">
                         <div class="title-wrapper">
                             <h2>{{product.title}}</h2>
-                            <h5>Stock availability.</h5>
+                            {% comment %} <h5>Stock availability.</h5> {% endcomment %}
                         </div>
                         <div class="star">
                             {% include product.average_rating|rating_to_star_template %}
@@ -111,9 +111,6 @@
                             <div class="icon-box">
                                 <a href="shop-details.html" class="icon">
                                     <i class="far fa-heart"></i>
-                                </a>
-                                <a href="shop-details.html" class="icon-2">
-                                    <img src="{% static 'assets/img/icon/shuffle.svg' %}" alt="svg-icon">
                                 </a>
                             </div>
                         </div>
@@ -288,8 +285,32 @@
                         </div>
                     </div>
                     <div id="review" class="tab-pane fade" role="tabpanel">
-                        <div class="review-items">    
-                            <form action="#" id="contact-form" method="POST">
+                        <div class="review-items"> 
+                            {% for review in product.reviews %}
+                            <div class="review-wrap-area d-flex gap-4">
+                                <div class="review-thumb">
+                                    <img src="{% static 'assets/img/shop-details/review.png' %}" alt="img">
+                                </div>
+                                <div class="review-content">
+                                    <div
+                                        class="head-area d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                        <div class="cont">
+                                            <h5><a href="#">{{review.user_first_name}}</a></h5>
+                                            <span>{{review.created_at}}</span>
+                                        </div>
+                                        <div class="star">
+                                            {% include review.score|rating_to_star_template %}
+                                        </div>
+                                    </div>
+                                    <p class="mt-30 mb-4">
+                                        {{review.review}}
+                                    </p>
+                                </div>
+                            </div>  
+                            {% endfor %}
+                            {% if is_logged_in %}
+                            <form action="" id="contact-form" method="POST">
+                                {% csrf_token %}
                                 <div class="review-title mt-5 py-15 mb-30">
                                     <h4>Your Rating*</h4>
                                     <div class="rate-now d-flex align-items-center">
@@ -298,7 +319,7 @@
                                                 <label class="checkbox-single d-flex align-items-center">
                                                     <span class="d-flex gap-xl-3 gap-2 align-items-center">
                                                         <span class="checkbox-area d-center">
-                                                            <input type="radio" name="rating" value="{{ rating }}">
+                                                            <input type="radio" name="score" value="{{ rating }}" required>
                                                             <span class="checkmark d-center"></span>
                                                         </span>
                                                         <span class="text-color">
@@ -333,32 +354,9 @@
                                         </div>
                                 </div>
                             </form>
-                            <div class="review-wrap-area d-flex gap-4">
-                                <div class="review-thumb">
-                                    <img src="assets/img/shop-details/review.png" alt="img">
-                                </div>
-                                <div class="review-content">
-                                    <div
-                                        class="head-area d-flex flex-wrap gap-2 align-items-center justify-content-between">
-                                        <div class="cont">
-                                            <h5><a href="news-details.html">Leslie Alexander</a></h5>
-                                            <span>February 10, 2024 at 2:37 pm</span>
-                                        </div>
-                                        <div class="star">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <p class="mt-30 mb-4">
-                                        Neque porro est qui dolorem ipsum quia quaed inventor veritatis et quasi
-                                        architecto var sed efficitur turpis gilla sed sit amet finibus eros. Lorem
-                                        Ipsum is <br> simply dummy
-                                    </p>
-                                </div>
-                            </div>
+                            {% else %}
+                                <p><a href="{% url 'auth_app:login' %}">Log in</a> to leave a review.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -411,7 +409,7 @@
                         </div>
                         <div class="shop-content">
                             <h5> Design Low Book </h5>
-                            <h3><a href="{% url 'store:product_detail' related_book.slug %}">{{related_book.title}}</h3>
+                            <h3><a href="{% url 'store:product_detail' related_book.slug %}">{{related_book.title|truncatewords:4}}</h3>
                             <ul class="price-list">
                                 <li>₦{{related_book.price}}</li>
                                 <li>
