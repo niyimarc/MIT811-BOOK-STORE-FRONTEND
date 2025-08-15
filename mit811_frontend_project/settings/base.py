@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'auth_app',
     'proxy',
     'store',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ TEMPLATES = [
                 'auth_app.context_processors.auth_status',
                 'store.context_processors.app_information',
                 'store.context_processors.categories_data',
+                'cart.context_processors.cart_context',
             ],
         },
     },

@@ -111,7 +111,7 @@
                                 <a href="wishlist.html" class="cart-icon">
                                     <i class="fa-regular fa-heart"></i>
                                 </a>
-                                <a href="shop-cart.html" class="cart-icon">
+                                <a href="{% url 'cart:cart' %}" class="cart-icon">
                                     <i class="fa-regular fa-cart-shopping"></i>
                                 </a>
                                 <div class="header-humbager ml-30">
@@ -206,11 +206,12 @@
                                 </form>
                             </div>
                             <div class="menu-cart">
-                                <a href="wishlist.html" class="cart-icon">
+                                <a href="wishlist.html" class="mycart-icon">
                                     <i class="fa-regular fa-heart"></i>
                                 </a>
-                                <a href="shop-cart.html" class="cart-icon">
+                                <a href="{% url 'cart:cart' %}" class="mycart-icon">
                                     <i class="fa-regular fa-cart-shopping"></i>
+                                    <span class="cart-count">{{ cart_count }}</span>
                                 </a>
                                 <div class="header-humbager ml-30">
                                     <a class="sidebar__toggle" href="javascript:void(0)">

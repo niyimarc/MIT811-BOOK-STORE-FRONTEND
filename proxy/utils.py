@@ -22,11 +22,11 @@ def refresh_access_token(session):
     refresh_token = session.get('refresh_token')
     
     if not refresh_token:
-        # print("There is no refresh token")
+        print("There is no refresh token")
         return None
 
     refresh_url = f"{settings.BACKEND_BASE_URL}/api/token/refresh/"
-    # print(refresh_url)
+    print(refresh_url)
     try:
         response = requests.post(refresh_url, json={'refresh': refresh_token})
         if response.status_code == 200:

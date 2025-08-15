@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('proxy.urls')),
     path('auth/', include('auth_app.urls')),
     path('', include('store.urls')),
+    path('', include('cart.urls')),
 ]
 
 if not settings.DEBUG:

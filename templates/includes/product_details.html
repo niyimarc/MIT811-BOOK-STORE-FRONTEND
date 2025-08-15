@@ -80,7 +80,7 @@
                             <div class="quantity-basket">
                                 <p class="qty">
                                     <button class="qtyminus" aria-hidden="true">−</button>
-                                    <input type="number" name="qty" id="qty2" min="1" max="10" step="1" value="1">
+                                    <input type="number" name="qty" id="qty-{{product.id}}" min="1" max="20" step="1" value="1">
                                     <button class="qtyplus" aria-hidden="true">+</button>
                                 </p>
                             </div> 
@@ -106,8 +106,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="shop-details.html" class="theme-btn"><i
-                                    class="fa-solid fa-basket-shopping"></i> Add To Cart</a>
+                            <button onclick="addToCart({{product.id}})" class="theme-btn"><i
+                                    class="fa-solid fa-basket-shopping"></i> Add To Cart</button>
                             <div class="icon-box">
                                 <a href="shop-details.html" class="icon">
                                     <i class="far fa-heart"></i>
@@ -419,8 +419,8 @@
                             </ul>
                         </div>
                         <div class="shop-button">
-                            <a href="shop-details.html" class="theme-btn"><i
-                                    class="fa-solid fa-basket-shopping"></i> Add To Cart</a>
+                            <button onclick="addToCart({{ related_book.id }})" class="theme-btn"><i
+                                class="fa-solid fa-basket-shopping"></i> Add To Cart</button>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,100 @@
+.header-2-wrapper .header-2-right .menu-cart .mycart-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  background-color: transparent;
+  display: inline-block;
+  border-radius: 50%;
+  border: 1px solid rgba(79, 83, 107, 0.3);
+}
+
+.header-2-wrapper .header-2-right .menu-cart .mycart-icon::before {
+  position: absolute;
+  top: -7px;
+  left: 0;
+  /* content: "0"; */
+  width: 18px;
+  line-height: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background-color: var(--theme);
+  color: var(--white);
+  font-size: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+.header-2-wrapper .header-2-right .menu-cart .mycart-icon i {
+  color: var(--header);
+}
+
+.header-1 .header-right .menu-cart .mycart-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  background-color: transparent;
+  display: inline-block;
+  border-radius: 50%;
+  border: 1px solid rgba(79, 83, 107, 0.3);
+}
+@media (max-width: 1199px) {
+  .header-1 .header-right .menu-cart .mycart-icon {
+    display: none;
+  }
+}
+.header-1 .header-right .menu-cart .mycart-icon::before {
+  position: absolute;
+  top: -7px;
+  left: 0;
+  /* content: "0"; */
+  width: 18px;
+  line-height: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background-color: var(--theme);
+  color: var(--white);
+  font-size: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+.header-1 .header-right .menu-cart .mycart-icon i {
+  color: var(--header);
+}
+
+.header-2 .header-right .menu-cart .mycart-icon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  background-color: transparent;
+  display: inline-block;
+  border-radius: 50%;
+  border: 1px solid rgba(79, 83, 107, 0.3);
+}
+@media (max-width: 1199px) {
+  .header-2 .header-right .menu-cart .mycart-icon {
+    display: none;
+  }
+}
+.header-2 .header-right .menu-cart .mycart-icon::before {
+  position: absolute;
+  top: -7px;
+  left: 0;
+  /* content: "0"; */
+  width: 18px;
+  line-height: 18px;
+  height: 18px;
+  border-radius: 18px;
+  background-color: var(--theme);
+  color: var(--white);
+  font-size: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+.header-2 .header-right .menu-cart .mycart-icon i {
+  color: var(--header);
+}

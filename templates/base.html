@@ -21,6 +21,7 @@
     </title>
     <!--<< Favcion >>-->
     <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
     <!--<< Bootstrap min.css >>-->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
     <!--<< All Min Css >>-->
@@ -170,6 +171,15 @@
         {% endif %}
     {% endfor %}
 
+    <script>
+        const csrftoken = '{{ csrf_token }}';
+        const addToCartUrl = "{% url 'cart:add_to_cart' %}";
+        const getCartUrl = "{% url 'cart:get_cart' %}"; 
+    </script>
+
+    <script src="{% static 'assets/js/get_cart_details.js' %}"></script>
+    <script src="{% static 'assets/js/add_to_cart.js' %}"></script>  
+    <script src="{% static 'assets/js/delete_from_cart.js' %}"></script>    
 </body>
 
 </html>
