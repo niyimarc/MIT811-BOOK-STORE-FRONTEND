@@ -58,6 +58,7 @@ TEMPLATES = [
                 'store.context_processors.app_information',
                 'store.context_processors.categories_data',
                 'cart.context_processors.cart_context',
+                'store.context_processors.featured_products'
             ],
         },
     },

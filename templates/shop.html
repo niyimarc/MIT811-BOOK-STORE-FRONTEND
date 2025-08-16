@@ -13,3 +13,32 @@
 {% block content %}
 {% include "includes/shop.html" %}
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartCount = {{ cart_count|default:0 }};
+    const offcanvas = document.querySelector(".offcanvas__info");
+    const overlay = document.querySelector(".offcanvas__overlay");
+    const closeBtn = document.querySelector(".offcanvas-close-btn");
+
+    if (cartCount > 0) {
+        // Show the offcanvas & overlay
+        offcanvas.classList.add("info-open");
+        overlay.classList.add("overlay-open");
+    }
+
+    // Close button handler
+    closeBtn.addEventListener("click", function () {
+        offcanvas.classList.remove("info-open");
+        overlay.classList.remove("overlay-open");
+    });
+
+    // Overlay click also closes offcanvas
+    overlay.addEventListener("click", function () {
+        offcanvas.classList.remove("info-open");
+        overlay.classList.remove("overlay-open");
+    });
+});
+</script>
+{% endblock extra_js %}
