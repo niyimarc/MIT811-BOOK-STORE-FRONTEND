@@ -4,9 +4,12 @@ from django.urls import reverse
 from django.http import JsonResponse
 import json
 from django.views.decorators.http import require_GET
+from auth_app.utils import session_access_required
 from .utils import (
     get_cart_data, 
-    cart_required, 
+    cart_required,
+    create_order,
+    submit_billing_address, 
     )
 
 # Create your views here.
@@ -118,3 +121,69 @@ def delete_cart_item_view(request, product_id):
         updated_cart = [item for item in session_cart if item.get("product_id") != product_id]
         request.session["cart"] = updated_cart
         return JsonResponse({'success': True})
+    
+@cart_required
+@session_access_required
+def checkout(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
+        print(data)
+        billing_data = {
+            "address": data.get("billing_address"),
+            "apartment": data.get("billing_apartment"),
+            "nearest_bus_stop": data.get("billing_nearest_bus_stop"),
+            "state": data.get("billing_state"),
+            "country": data.get("billing_country"),
+            "zip_code": data.get("billing_zip"),
+        }
+        
+        billing_result = submit_billing_address(request, billing_data)
+        if not billing_result.get("success"):
+            return JsonResponse(billing_result, status=400)
+
+        # Determine whether to use different shipping address
+        use_different_shipping = data.get("different_address") == "on"
+
+        # Shipping
+        if use_different_shipping:
+            shipping_data = {
+                "shipping_address": data.get("shipping_address"),
+                "shipping_apartment": data.get("shipping_apartment"),
+                "shipping_nearest_bus_stop": data.get("shipping_nearest_bus_stop"),
+                "shipping_state": data.get("shipping_state"),
+                "shipping_country": data.get("shipping_country"),
+                "shipping_zip": data.get("shipping_zip"),
+            }
+        else:
+            # Use billing data as shipping data
+            shipping_data = {
+                "shipping_address": billing_data["address"],
+                "shipping_apartment": billing_data["apartment"],
+                "shipping_nearest_bus_stop": billing_data["nearest_bus_stop"],
+                "shipping_state": billing_data["state"],
+                "shipping_country": billing_data["country"],
+                "shipping_zip": billing_data["zip_code"],
+            }
+            
+        # Order note
+        order_note = {
+            "note": data.get("order_note", "")
+        }
+
+
+        # Cart items
+        cart_data = get_cart_data(request)
+        cart_items = cart_data.get("cart_items", [])
+
+        order_result = create_order(request, shipping_data, order_note, cart_items)
+        if not order_result.get("success"):
+            return JsonResponse(order_result, status=400)
+
+        return JsonResponse({"success": True})
+    context = {
+        
+    }
+    return render(request, 'checkout.html', context)

@@ -1,0 +1,229 @@
+{% load static %}
+<section class="checkout-section fix section-padding">
+    <div class="container">
+        <form action="#" id="order_details_form" method="post">
+        {% csrf_token %}
+        <div class="row g-5">
+            
+            <div class="col-lg-9">
+                
+                    <div class="checkout-single-wrapper">
+                        <div class="checkout-single boxshado-single">
+                            <h4>Billing Details</h4>
+                            <div class="checkout-single-form">
+                                <div class="row g-4">
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>First Name</span>
+                                            <input type="text" value="{{ user_profile.first_name }}" id="userFirstName" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Last Name</span>
+                                            <input type="text" value="{{ user_profile.last_name }}" id="userLastName" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-single">
+                                            <span>Email Address</span>
+                                            <input value="{{ user_profile.email }}" id="email22" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Address*</span>
+                                            <input name="billing_address" value="{{ user_profile.billing_address.address }}" placeholder="Home number and street name" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Apartment</span>
+                                            <input name="billing_apartment" value="{{ user_profile.billing_address.apartment }}" id="userAddress"
+                                                placeholder="Apartment, suite, unit, etc. (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Nearest Bus Stop*</span>
+                                            <input name="billing_nearest_bus_stop" value="{{ user_profile.billing_address.nearest_bus_stop }}" id="userAddress2"
+                                                placeholder="Nearest Bus Stop" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>State*</span>
+                                            <input name="billing_state" value="{{ user_profile.billing_address.state }}" id="country" placeholder="State" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Country*</span>
+                                            <input name="billing_country" value="{{ user_profile.billing_address.country }}" id="country" placeholder="Country" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-single">
+                                            <span>Zip Code*</span>
+                                            <input name="billing_zip" value="{{ user_profile.billing_address.zip_code }}" id="towncity" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="input-check payment-save style-2">
+                                            <input type="checkbox" class="form-check-input" id="shipToDifferent" name="different_address">
+                                            <label for="saveForNext2">Ship to a different address?</label>
+                                        </div>
+                                    </div>
+                                    <div id="shippingAddressContainer" style="display: none;">
+                                        <div class="row"> 
+                                            <div class="col-lg-6">
+                                                <div class="input-single">
+                                                    <span>Address*</span>
+                                                    <input name="shipping_address" placeholder="Home number and street name">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-6">
+                                                <div class="input-single">
+                                                    <span>Apartment</span>
+                                                    <input name="shipping_apartment" id="userAddress"
+                                                        placeholder="Apartment, suite, unit, etc. (optional)">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-single">
+                                                    <span>Nearest Bus Stop*</span>
+                                                    <input name="shipping_nearest_bus_stop" id="userAddress2"
+                                                        placeholder="Nearest Bus Stop" >
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-single">
+                                                    <span>State*</span>
+                                                    <input name="shipping_state" id="country" placeholder="State">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-single">
+                                                    <span>Country*</span>
+                                                    <input name="shipping_country" id="country" placeholder="Country">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-single">
+                                                    <span>Zip Code*</span>
+                                                    <input name="shipping_zip" id="towncity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="input-single">
+                                            <span>order notes (optional)</span>
+                                            <textarea name="order_note" id="notes"
+                                                placeholder="Notes about your order, e.g special notes for delivery."></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+            <div class="col-lg-3">
+                <div class="checkout-order-area">
+                    <h3>Our Order</h3>
+                    <div class="product-checout-area">
+                        <div class="checkout-item d-flex align-items-center justify-content-between">
+                            <p>Product</p>
+                            <p>Subtotal</p>
+                        </div>
+                        {% for item in cart_items %}
+                        <div class="checkout-item d-flex align-items-center justify-content-between">
+                            <p>{{item.product_name}} × {{ item.quantity }}</p>
+                            <p>₦{{item.get_total_price}}</p>
+                        </div>
+                        {% endfor %}
+                        <div class="checkout-item d-flex justify-content-between">
+                            <p>Shipping</p>
+                            <div class="shopping-items">
+                                <div class="form-check d-flex align-items-center from-customradio">
+                                    <label class="form-check-label">
+                                        Free Shipping
+                                    </label>
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="flexRadioDefault12">
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                        <div class="checkout-item d-flex align-items-center justify-content-between">
+                            <p>Total</p>
+                            <p>₦{{ cart_total }}</p>
+                        </div>
+                        <div class="checkout-item-2">
+                            <div class="form-check-2 d-flex align-items-center from-customradio-2">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1222">
+                                <label class="form-check-label" for="flexRadioDefault1222">
+                                    Direct bank transfer
+                                </label>
+                            </div>
+                            <p>
+                                Make your payment directly into our bank account please use your Order ID as the
+                                payment reference. Your order will not be shipped until the funds have cleared in
+                                our account.
+                            </p>
+                            <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault12224">
+                                <label class="form-check-label" for="flexRadioDefault12224">
+                                    Cash on delivery
+                                </label>
+                            </div>
+                            <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                <input class="form-check-input" name="payment_type" value="paystack" type="radio" checked
+                                    id="paystack">
+                                <label class="form-check-label" for="paystack">
+                                    Paystack
+                                </label>
+                                <ul class="brand-logo">
+                                    <li>
+                                        <a href="checkout.html">
+                                            <img src="{% static 'assets/img/Paystack.png' %}" height="35px" alt="img">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                <input class="form-check-input" type="radio" name="payment_type" value="flutterwave"
+                                    id="flutterwave">
+                                <label class="form-check-label" for="flutterwave">
+                                    Flutterwave
+                                </label>
+                                <ul class="brand-logo">
+                                    <li>
+                                        <a href="checkout.html">
+                                            <img src="{% static 'assets/img/flutterwave.webp' %}" height="35px" alt="img">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                <button type="submit" id="place-order-btn" class="theme-btn"> Place Order</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        </form>
+    </div>
+</section>

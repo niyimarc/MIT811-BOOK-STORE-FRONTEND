@@ -11,6 +11,7 @@
                         <h1 id="loginModalLabel">welcome back!</h1>
                         <form id="loginForm" method="post" action="{% url 'auth_app:login' %}">
                             {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ next }}">
                             <input class="inputField" type="email" name="username" placeholder="Email Address">
                             <input class="inputField" type="password" name="password" placeholder="Enter Password">
                             <div class="input-check remember-me">

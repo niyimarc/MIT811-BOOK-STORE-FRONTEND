@@ -45,6 +45,7 @@ def login_view(request):
                 )
                 if profile_response.status_code == 200:
                     request.session['user_profile'] = profile_response.json()
+                    request.session.save()
             except requests.RequestException:
                 request.session['user_profile'] = {}
 
@@ -70,14 +71,16 @@ def login_view(request):
                 except requests.RequestException as e:
                     print("Cart sync failed:", str(e))
 
-            next_url = request.GET.get("next")
+            next_url = request.POST.get("next") or request.GET.get("next")
             if next_url:
                 return redirect(next_url)
             return redirect('store:home')
         else:
             messages.error(request, 'Invalid credentials.')
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', {
+            "next": request.GET.get("next", "")
+        })
 
 @redirect_if_authenticated
 def register_view(request):
