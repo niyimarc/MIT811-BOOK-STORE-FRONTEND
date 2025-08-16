@@ -9,7 +9,7 @@
                 </li>
                 <li>
                     <i class="far fa-envelope"></i>
-                    <a href="mailto:info@example.com">info@example.com</a>
+                    <a href="mailto:info@bookhive.us">info@bookhive.us</a>
                 </li>
                 <li>
                     <i class="far fa-clock"></i>
@@ -17,7 +17,7 @@
                 </li>
             </ul>
             <ul class="list">
-                <li><i class="fa-light fa-comments"></i><a href="contact.html">Live Chat</a></li>
+                <li><i class="fa-light fa-comments"></i><a href="{% url 'store:shop' %}">Live Chat</a></li>
                 <li><i class="fa-light fa-user"></i>
                     {% if is_logged_in %}
                     <a href="{% url 'auth_app:logout' %}">
@@ -44,7 +44,7 @@
                         <div class="header-left">
                             <div class="logo">
                                 <a href="index.html" class="header-logo">
-                                    <img src="{% static 'assets/img/logo/white-logo.svg' %}" alt="logo-img">
+                                    <img src="{% static 'assets/img/logo/hive.png' %}" height="60px" alt="logo-img">
                                 </a>
                             </div>
                             <div class="mean__menu-wrapper">
@@ -142,8 +142,8 @@
                     <div class="col-6 col-md-6 col-lg-10 col-xl-8 col-xxl-10">
                         <div class="header-left">
                             <div class="logo">
-                                <a href="index.html" class="header-logo">
-                                    <img src="{% static 'assets/img/logo/white-logo.svg' %}" alt="logo-img">
+                                <a href="{% url 'store:home' %}" class="header-logo">
+                                    <img src="{% static 'assets/img/logo/hive.png' %}" height="60px" alt="logo-img">
                                 </a>
                             </div>
                             <div class="mean__menu-wrapper">

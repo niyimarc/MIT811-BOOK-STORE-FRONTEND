@@ -1,3 +1,4 @@
+{% load static %}
 <footer class="footer-section footer-bg">
     <div class="container">
         <div class="contact-info-area">
@@ -19,7 +20,7 @@
                 <div class="content">
                     <p>Make a Quote</p>
                     <h3>
-                        <a href="mailto:example@gmail.com">example@gmail.com</a>
+                        <a href="mailto:info@bookhive.us">info@bookhive.us</a>
                     </h3>
                 </div>
             </div>
@@ -49,7 +50,7 @@
     </div>
     <div class="footer-widgets-wrapper">
         <div class="plane-shape float-bob-y">
-            <img src="assets/img/plane-shape.png" alt="img">
+            <img src="{% static 'assets/img/plane-shape.png' %}" alt="img">
         </div>
         <div class="container">
             <div class="row">
@@ -57,13 +58,12 @@
                     <div class="single-footer-widget">
                         <div class="widget-head">
                             <a href="index.html">
-                                <img src="assets/img/logo/white-logo.svg" alt="logo-img">
+                                <img src="{% static 'assets/img/logo/hive.png' %}" height="120px" alt="logo-img">
                             </a>
                         </div>
                         <div class="footer-content">
                             <p>
-                                Phasellus ultricies aliquam volutpat ullamcorper laoreet neque, a lacinia curabitur
-                                lacinia mollis
+                                At {{business_name}}, we bring together the books you love and the ones you’ve yet to discover. 
                             </p>
                             <div class="social-icon d-flex align-items-center">
                                 <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
@@ -77,31 +77,30 @@
                 <div class="col-xl-3 col-lg-4 col-md-6 ps-lg-5 wow fadeInUp" data-wow-delay=".4s">
                     <div class="single-footer-widget">
                         <div class="widget-head">
-                            <h3>Costumers Support</h3>
+                            <h3>Site Map</h3>
                         </div>
                         <ul class="list-area">
                             <li>
-                                <a href="shop.html">
+                                <a href="{% url 'store:home' %}">
                                     <i class="fa-solid fa-chevrons-right"></i>
-                                    Store List
+                                    Home
                                 </a>
                             </li>
                             <li>
-                                <a href="contact.html">
-                                    <i class="fa-solid fa-chevrons-right"></i>
-                                    Opening Hours
-                                </a>
-                            </li>
-                            <li>
-                                <a href="contact.html">
+                                <a href="{% url 'store:contact' %}">
                                     <i class="fa-solid fa-chevrons-right"></i>
                                     Contact Us
+                            </li>
+                            <li>
+                                <a href="{% url 'store:about' %}">
+                                    <i class="fa-solid fa-chevrons-right"></i>
+                                    About Us
                                 </a>
                             </li>
                             <li>
-                                <a href="contact.html">
+                                <a href="{% url 'store:shop' %}">
                                     <i class="fa-solid fa-chevrons-right"></i>
-                                    Return Policy
+                                    Shop
                                 </a>
                             </li>
                         </ul>
@@ -113,30 +112,14 @@
                             <h3>Categories</h3>
                         </div>
                         <ul class="list-area">
+                            {% for cat in categories|slice:":4" %}
                             <li>
-                                <a href="shop.html">
+                                <a href="{% url 'store:shop' %}?categories={{ cat.slug }}">
                                     <i class="fa-solid fa-chevrons-right"></i>
-                                    Novel Books
+                                    {{ cat.name }} ({{ cat.product_count }})
                                 </a>
                             </li>
-                            <li>
-                                <a href="shop.html">
-                                    <i class="fa-solid fa-chevrons-right"></i>
-                                    Poetry Books
-                                </a>
-                            </li>
-                            <li>
-                                <a href="contact.html">
-                                    <i class="fa-solid fa-chevrons-right"></i>
-                                    Political Books
-                                </a>
-                            </li>
-                            <li>
-                                <a href="contact.html">
-                                    <i class="fa-solid fa-chevrons-right"></i>
-                                    History Books
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -163,27 +146,27 @@
         <div class="container">
             <div class="footer-wrapper d-flex align-items-center justify-content-between">
                 <p class="wow fadeInLeft" data-wow-delay=".3s">
-                    © All Copyright <script>document.write(new Date().getFullYear())</script> by <a href="{% url 'store:home' %}">{{business_name}}</a>
+                    © All Copyright <script>document.write(new Date().getFullYear())</script> by <a href="{% url 'store:home' %}">{{business_name}} Group 19</a>
                 </p>
                 <ul class="brand-logo wow fadeInRight" data-wow-delay=".5s">
                     <li>
                         <a href="contact.html">
-                            <img src="assets/img/visa-logo.png" alt="img">
+                            <img src="{% static 'assets/img/visa-logo.png' %}" alt="img">
                         </a>
                     </li>
                     <li>
                         <a href="contact.html">
-                            <img src="assets/img/mastercard.png" alt="img">
+                            <img src="{% static 'assets/img/mastercard.png' %}" alt="img">
                         </a>
                     </li>
                     <li>
                         <a href="contact.html">
-                            <img src="assets/img/payoneer.png" alt="img">
+                            <img src="{% static 'assets/img/payoneer.png' %}" alt="img">
                         </a>
                     </li>
                     <li>
                         <a href="contact.html">
-                            <img src="assets/img/affirm.png" alt="img">
+                            <img src="{% static 'assets/img/affirm.png' %}" alt="img">
                         </a>
                     </li>
                 </ul>
