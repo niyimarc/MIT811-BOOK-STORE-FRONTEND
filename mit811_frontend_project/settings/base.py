@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'proxy',
     'store',
     'cart',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,10 @@ PROXY_BASE_URL = os.environ.get("PROXY_BASE_URL", "http://127.0.0.1:8001/proxy/"
 BUSINESS_NAME = os.environ.get('BUSINESS_NAME')
 BUSINESS_LOGO = os.environ.get('BUSINESS_LOGO')
 CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL')
+
+PAYSTACK_PUBLIC_KEY = os.environ.get('PAYSTACK_PUBLIC_KEY')
+FLUTTERWAVE_PUBLIC_KEY = os.environ.get('FLUTTERWAVE_PUBLIC_KEY')
+INTERSWITCH_MERCHANT_CODE = os.environ.get('INTERSWITCH_MERCHANT_CODE')
+INTERSWITCH_PAY_ITEM_ID = os.environ.get('INTERSWITCH_PAY_ITEM_ID')
+
+DJANGO_PG_SUCCESS_REDIRECT = 'store:home'

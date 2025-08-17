@@ -1,7 +1,8 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
+from django.contrib import messages
 import json
 from django.views.decorators.http import require_GET
 from auth_app.utils import session_access_required
@@ -126,11 +127,9 @@ def delete_cart_item_view(request, product_id):
 @session_access_required
 def checkout(request):
     if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-        except json.JSONDecodeError:
-            return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
-        print(data)
+        data = request.POST  # HTML form submission
+
+        # --- Billing Data ---
         billing_data = {
             "address": data.get("billing_address"),
             "apartment": data.get("billing_apartment"),
@@ -139,15 +138,17 @@ def checkout(request):
             "country": data.get("billing_country"),
             "zip_code": data.get("billing_zip"),
         }
-        
+
         billing_result = submit_billing_address(request, billing_data)
         if not billing_result.get("success"):
-            return JsonResponse(billing_result, status=400)
+            messages.error(request, "Billing validation failed. Please check your details.")
+            return render(request, "checkout.html", {
+                "form_data": data,  # prefill old inputs
+            })
 
-        # Determine whether to use different shipping address
+        # --- Shipping Data ---
         use_different_shipping = data.get("different_address") == "on"
 
-        # Shipping
         if use_different_shipping:
             shipping_data = {
                 "shipping_address": data.get("shipping_address"),
@@ -158,7 +159,6 @@ def checkout(request):
                 "shipping_zip": data.get("shipping_zip"),
             }
         else:
-            # Use billing data as shipping data
             shipping_data = {
                 "shipping_address": billing_data["address"],
                 "shipping_apartment": billing_data["apartment"],
@@ -167,23 +167,30 @@ def checkout(request):
                 "shipping_country": billing_data["country"],
                 "shipping_zip": billing_data["zip_code"],
             }
-            
-        # Order note
-        order_note = {
-            "note": data.get("order_note", "")
-        }
 
+        # --- Order Note ---
+        order_note = {"note": data.get("order_note", "")}
 
-        # Cart items
+        # --- Cart Items ---
         cart_data = get_cart_data(request)
         cart_items = cart_data.get("cart_items", [])
 
         order_result = create_order(request, shipping_data, order_note, cart_items)
         if not order_result.get("success"):
-            return JsonResponse(order_result, status=400)
+            messages.error(request, "Could not create order. Please try again.")
+            return render(request, "checkout.html", {
+                "form_data": data,
+            })
 
-        return JsonResponse({"success": True})
-    context = {
-        
-    }
-    return render(request, 'checkout.html', context)
+        # --- Success: Redirect to payment ---
+        order_reference = order_result.get("order_id")
+        payment_method = data.get("payment_type")
+
+        # messages.success(request, "Order created successfully! Please proceed to payment.")
+        return redirect(
+            "payment:payment_view",
+            order_reference=order_reference,
+            payment_method=payment_method
+        )
+
+    return render(request, "checkout.html", {})

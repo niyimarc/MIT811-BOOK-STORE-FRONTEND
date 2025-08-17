@@ -11,6 +11,7 @@ urlpatterns = [
     path('auth/', include('auth_app.urls')),
     path('', include('store.urls')),
     path('', include('cart.urls')),
+    path('', include('payment.urls')),
 ]
 
 if not settings.DEBUG:

@@ -125,60 +125,7 @@ def create_order(request, shipping_data, note, cart_items):
     sessionid = request.COOKIES.get("sessionid")
 
     # Convert cart_items into order_items payload
-    order_items = []
-    for item in cart_items:
-        order_items.append({
-            "product": item["product_id"],
-            "quantity": item["quantity"]
-        })
-
-    payload = {
-        "note": note,
-        "shipping_address": {
-            "address": shipping_data.get("shipping_address"),
-            "apartment": shipping_data.get("shipping_apartment"),
-            "city": shipping_data.get("shipping_city"),
-            "state": shipping_data.get("shipping_state"),
-            "country": shipping_data.get("shipping_country"),
-            "zip_code": shipping_data.get("shipping_zip"),
-        },
-        "order_items": order_items
-    }
-
-    try:
-        response = requests.post(
-            order_url,
-            json=payload,
-            headers={
-                "Authorization": f"Bearer {access_token}",
-                "Cookie": f"sessionid={sessionid}"
-            }
-        )
-        if response.status_code in (200, 201):
-            return {"success": True}
-        return {"success": False, "error": response.text}
-    except requests.RequestException as e:
-        return {"success": False, "error": str(e)}
-
-def create_order(request, shipping_data, note, cart_items):
-    access_token = request.session.get("access_token")
-    if not access_token:
-        return {'success': False, 'error': 'Unauthorized'}
-
-    endpoint = "/api/orders/create/"
-    order_url = request.build_absolute_uri(
-        reverse('proxy_handler') + f"?endpoint={endpoint}&endpoint_type=private"
-    )
-
-    sessionid = request.COOKIES.get("sessionid")
-
-    # Convert cart_items into order_items payload
-    order_items = []
-    for item in cart_items:
-        order_items.append({
-            "product": item["product_id"],
-            "quantity": item["quantity"]
-        })
+    order_items = [{"product": item["product_id"], "quantity": item["quantity"]} for item in cart_items]
 
     payload = {
         "note": note,
@@ -202,7 +149,7 @@ def create_order(request, shipping_data, note, cart_items):
             }
         )
         if response.status_code in (200, 201):
-            return {"success": True}
+            return response.json()
         return {"success": False, "error": response.text}
     except requests.RequestException as e:
         return {"success": False, "error": str(e)}

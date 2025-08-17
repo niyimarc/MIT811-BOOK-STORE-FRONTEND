@@ -1,7 +1,7 @@
 {% load static %}
 <section class="checkout-section fix section-padding">
     <div class="container">
-        <form action="#" id="order_details_form" method="post">
+        <form action="" id="order_details_form" method="post">
         {% csrf_token %}
         <div class="row g-5">
             
@@ -210,6 +210,20 @@
                                     <li>
                                         <a href="checkout.html">
                                             <img src="{% static 'assets/img/flutterwave.webp' %}" height="35px" alt="img">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form-check-3 d-flex align-items-center from-customradio-2 mt-3">
+                                <input class="form-check-input" type="radio" name="payment_type" value="interswitch"
+                                    id="interswitch">
+                                <label class="form-check-label" for="interswitch">
+                                    Interswitch
+                                </label>
+                                <ul class="brand-logo">
+                                    <li>
+                                        <a href="checkout.html">
+                                            <img src="{% static 'assets/img/interswitch.jpeg' %}" height="35px" alt="img">
                                         </a>
                                     </li>
                                 </ul>
