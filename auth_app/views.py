@@ -52,7 +52,7 @@ def login_view(request):
             guest_cart = request.session.get('cart', [])
             if guest_cart:
                 sync_cart_url = request.build_absolute_uri(
-                    reverse('proxy_handler') + '?endpoint=/store/api/cart/sync_cart/&endpoint_type=private'
+                    reverse('proxy_handler') + '?endpoint=/api/cart/sync_cart/&endpoint_type=private'
                 )
 
                 sessionid = request.COOKIES.get('sessionid')
