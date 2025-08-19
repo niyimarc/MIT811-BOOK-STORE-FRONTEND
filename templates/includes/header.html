@@ -13,7 +13,7 @@
                 </li>
             </ul>
             <ul class="list">
-                <li><i class="fa-light fa-comments"></i><a href="{% url 'store:shop' %}">Live Chat</a></li>
+                <li><i class="fa-light fa-comments"></i><a href="{% url 'store:contact' %}">Contact Us</a></li>
                 <li><i class="fa-light fa-user"></i>
                     {% if is_logged_in %}
                     <a href="{% url 'auth_app:logout' %}">
@@ -39,7 +39,7 @@
                     <div class="col-6 col-md-6 col-lg-10 col-xl-8 col-xxl-10">
                         <div class="header-left">
                             <div class="logo">
-                                <a href="index.html" class="header-logo">
+                                <a href="{% url 'store:home' %}" class="header-logo">
                                     <h1 class="text-white mb-40 wow fadeInUp" data-wow-delay=".3s">{{business_name}}</h1>
                                     {% comment %} <img src="{% static 'assets/img/logo/hive.png' %}" height="60px" alt="logo-img"> {% endcomment %}
                                 </a>
@@ -105,7 +105,7 @@
                                 </form>
                             </div>
                             <div class="menu-cart">
-                                <a href="wishlist.html" class="mycart-icon">
+                                <a href="#" class="mycart-icon">
                                     <i class="fa-regular fa-heart"></i>
                                 </a>
                                 <a href="{% url 'cart:cart' %}" class="mycart-icon">
@@ -205,7 +205,7 @@
                                 </form>
                             </div>
                             <div class="menu-cart">
-                                <a href="wishlist.html" class="mycart-icon">
+                                <a href="#" class="mycart-icon">
                                     <i class="fa-regular fa-heart"></i>
                                 </a>
                                 <a href="{% url 'cart:cart' %}" class="mycart-icon">
