@@ -78,7 +78,8 @@
                     <div class="contact-content">
                         <h2>Have any question?</h2>
                         
-                        <form action="contact.php" id="contact-form" method="POST" class="contact-form-items">
+                        <form action="" id="contact-form" method="POST" class="contact-form-items">
+                        {% csrf_token %}
                             <div class="row g-4">
                                 <div class="col-lg-6 wow fadeInUp" data-wow-delay=".3s">
                                     <div class="form-clt">
@@ -89,7 +90,13 @@
                                 <div class="col-lg-6 wow fadeInUp" data-wow-delay=".5s">
                                     <div class="form-clt">
                                         <span>Your Email*</span>
-                                        <input type="text" name="email" id="email123" placeholder="Your Email">
+                                        <input type="email" name="email" id="email123" placeholder="Your Email">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 wow fadeInUp" data-wow-delay=".3s">
+                                    <div class="form-clt">
+                                        <span>Subject*</span>
+                                        <input type="text" name="subject" id="subject" placeholder="Subject">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 wow fadeInUp" data-wow-delay=".7s">

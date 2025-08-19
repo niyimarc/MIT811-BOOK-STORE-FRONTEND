@@ -40,6 +40,9 @@
     <link rel="stylesheet" href="{% static 'assets/css/icomoon.css' %}">
     <!--<< Main.css >>-->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    
+
 </head>
 
 <body>
@@ -170,7 +173,8 @@
             </script>
         {% endif %}
     {% endfor %}
-
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
     <script>
         const csrftoken = '{{ csrf_token }}';
         const addToCartUrl = "{% url 'cart:add_to_cart' %}";

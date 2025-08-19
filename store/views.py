@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .utils import get_products, remove_params, get_rating_counts, get_product_details, submit_product_rating
+from .utils import get_products, remove_params, get_rating_counts, get_product_details, submit_product_rating, submit_contact_form
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse, Http404
 import requests
@@ -191,6 +191,31 @@ def product_details(request, slug):
     return render(request, "product_details.html", context)
 
 def contact(request):
+    submit_contact_form_url = request.build_absolute_uri(submit_contact_form())
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        subject = request.POST.get("subject")
+        message = request.POST.get("message")
+
+        payload = {
+                "name": name,
+                "email": email,
+                "subject": subject,
+                "message": message
+            }
+        try:
+            res = requests.post(submit_contact_form_url, json=payload, timeout=10)
+            if res.status_code in (200, 201):
+                messages.success(request, "Message submitted successfully!")
+                return redirect("store:contact")
+            else:
+                messages.error(request, f"Error submitting message: {res.text}")
+                return redirect("store:contact")
+        except requests.RequestException:
+            messages.error(request, "Could not submit message. Please try again later.")
+            return redirect("store:contact")
+
     context = {
 
     }

@@ -18,15 +18,36 @@ function addToCart(productId) {
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            alert('Added to cart!');
-            location.reload();
-            // getCartDetails?.(); 
+            Toastify({
+                text: "✅ Added to cart!",
+                duration: 4000,
+                gravity: "bottom", // top or bottom
+                position: "right", // left, center, or right
+                backgroundColor: "#2ecc71",
+            }).showToast();
+
+            // Delay reload until toast disappears
+            setTimeout(() => {
+                location.reload();
+            }, 3100);
         } else {
-            alert('Failed to add to cart: ' + (result.error || 'Unknown error'));
+            Toastify({
+                text: "❌ Failed to add: " + (result.error || "Unknown error"),
+                duration: 4000,
+                gravity: "bottom",
+                position: "right",
+                backgroundColor: "#e74c3c",
+            }).showToast();
         }
     })
     .catch(error => {
-        console.error('Add to cart failed:', error);
-        alert('Something went wrong.');
+        console.error("Add to cart failed:", error);
+        Toastify({
+            text: "⚠️ Something went wrong.",
+            duration: 4000,
+            gravity: "bottom",
+            position: "right",
+            backgroundColor: "#e74c3c",
+        }).showToast();
     });
 }

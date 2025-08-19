@@ -80,3 +80,11 @@ def remove_params(querydict, *params):
     for p in params:
         qs.pop(p, None)
     return qs.urlencode()
+
+def submit_contact_form():
+    endpoint = "/api/contact_us/"
+    params = {
+        "endpoint_type": "public",
+    }
+    query_string = urlencode(params, doseq=True)
+    return reverse("proxy_handler") + f"?endpoint={endpoint}&{query_string}"
