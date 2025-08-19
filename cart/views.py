@@ -183,7 +183,8 @@ def checkout(request):
             })
 
         # --- Success: Redirect to payment ---
-        order_reference = order_result.get("order_id")
+        order_reference = order_result.get("order_reference")
+        print(f"Order Reference: {order_reference}")
         payment_method = data.get("payment_type")
 
         # messages.success(request, "Order created successfully! Please proceed to payment.")

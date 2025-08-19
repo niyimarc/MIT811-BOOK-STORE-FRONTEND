@@ -26,7 +26,7 @@
             currency: "NGN",
             ref: '' + Math.floor((Math.random() * 1000000000) + 1),
             callback: function(response) {
-                window.location.href = "{% url 'payment:payment_view' order_id payment_method %}?reference=" + response.reference;
+                window.location.href = "{% url 'payment:payment_view' order_reference payment_method %}?reference=" + response.reference;
             },
             onClose: function() {
                 alert('Payment was not completed.');
@@ -51,10 +51,10 @@
       amount: {{order.total_price}},
       currency: "NGN",
       payment_options: "card, ussd, banktransfer",
-      redirect_url: "{% url 'payment:payment_view' order_id payment_method %}",
+      redirect_url: "{% url 'payment:payment_view' order_reference payment_method %}",
       customer: {
         email: "{{ user_profile.email }}",
-        name: "{{ user_profile.first_name }} { user_profile.last_name }}"
+        name: "{{ user_profile.first_name }} {{ user_profile.last_name }}"
       },
       customizations: {
         title: "{{business_name}}",
@@ -69,7 +69,7 @@
 <script src="https://newwebpay.qa.interswitchng.com/inline-checkout.js"></script>
 <script>
 (function() {
-    const redirectUrl = "{% url 'payment:payment_view' order_id payment_method %}?reference={{ order_reference }}";
+    const redirectUrl = "{% url 'payment:payment_view' order_reference payment_method %}?reference={{ order_reference }}";
     const paymentAmount = {{ order.total_price|floatformat:0 }} * 100;
 
     function paymentCallback(response) {
@@ -91,7 +91,7 @@
         amount: paymentAmount,
         currency: 566,
         cust_email: "{{ user_profile.email }}",
-        cust_name: "{{ user_profile.first_name }} { user_profile.last_name }}",
+        cust_name: "{{ user_profile.first_name }} {{ user_profile.last_name }}",
         onComplete: paymentCallback,
         mode: "TEST"
     };

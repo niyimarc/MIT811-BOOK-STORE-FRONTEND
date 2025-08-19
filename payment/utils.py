@@ -24,20 +24,31 @@ def get_order_details(request, order_reference):
 
 
 def get_payment_verification(request, order_id, payment_method, reference=None):
+    # print("Payment Verification triggered!")
     access_token = request.session.get("access_token")
     if not access_token:
         raise Http404("Unauthorized")
 
     sessionid = request.COOKIES.get("sessionid")
-    endpoint = f"/api/payments/verify/{order_id}/{payment_method}/"
+    endpoint = f"/api/verify/{order_id}/{payment_method}/"
     params = {"endpoint_type": "private"}
-    if reference:
-        params["reference"] = reference
 
-    url = reverse("proxy_handler") + f"?endpoint={endpoint}&{urlencode(params)}"
+    url = request.build_absolute_uri(
+        reverse("proxy_handler") + f"?endpoint={endpoint}&{urlencode(params)}"
+    )
+    # print("Verification URL:", url)
 
     headers = {"Authorization": f"Bearer {access_token}"}
     if sessionid:
-        headers["Cookie"] = f"sessionid={sessionid}"
+        headers["Cookie"] = f"sessionid={sessionid}" 
 
-    return url, headers
+    data = {}
+    if reference:
+        data["reference"] = reference
+
+    # Actually POST to backend
+    response = requests.post(url, headers=headers, json=data)
+
+    # print("Backend verification response:", response.status_code, response.text)
+
+    return response.json()
